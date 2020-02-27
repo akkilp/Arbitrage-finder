@@ -1,62 +1,109 @@
 import React, { useState } from 'react';
 
-import Jumbotron from 'react-bootstrap/Jumbotron';
-import Toast from 'react-bootstrap/Toast';
-import Container from 'react-bootstrap/Container';
-import Button from 'react-bootstrap/Button';
+import './App.scss';
 
-import ThemeSwitcher from 'react-bootrap/ThemeSwitcher'
+const list = [{number:1, name:"cucumber", provider:"this", information:"on khyl"},
+{number:1, name:"cucumber", provider:"this", information:"on khyl"},
+{number:2, name:"cucumber", provider:"this", information:"on khyl"},
+{number:3, name:"cucumber", provider:"this", information:"on khyl"},
+{number:4, name:"cucumber", provider:"this", information:"on khyl"},
+{number:5, name:"cucumber", provider:"this", information:"on khyl"},
+{number:7, name:"cucumber", provider:"this", information:"on khyl"}]
 
-import './App.css';
 
-const ExampleToast = ({ children }) => {
-  const [show, toggleShow] = useState(true);
-
+const NavBar = () => {
+  
   return (
     <>
-      {!show && <Button onClick={() => toggleShow(true)}>Show Toast</Button>}
-      <Toast show={show} onClose={() => toggleShow(false)}>
-        <Toast.Header>
-          <strong className="mr-auto">Arbitraasi kalkulaattori</strong>
-        </Toast.Header>
-
-        <Toast.Body>{children}</Toast.Body>
-        <Button onClick={() => toggleShow(true)}>BEST BETS</Button>
-      </Toast>
-
+      <div className="nav-bar">
+        <nav className="nav-con">
+          <Games/>
+          <Betters/>
+          <About/>
+        </nav>
+      </div>
     </>
   );
 };
 
-const Markku = ({ children }) => {
+const MainContainer = () => {
   return (
-    <>
-      <Container>
-        // CONTAINER
-      </Container>
-    </>
+      <div className="main-con">
+        <Matches/>
+        <TopLists/>
+
+      </div>
   );
 };
 
 const App = () => (
-  <Container className="p-3">
+  <div>
+    <NavBar/>
+    <MainContainer/>
+  </div>
 
-    // JUMBOTRON 
-    <Jumbotron>
-
-      //HEADER 1
-      <h1 className="header">HLTV torakka</h1>
-
-      <ExampleToast className="toast">
-        Nää parhaat kertoimet tuleville E-Sports peleille
-      </ExampleToast>
-
-    </Jumbotron>
-
-    <ThemeSwitcher/>
-
-      <Markku />
-  </Container>
 );
+
+
+function Games() {
+  return <h2>Games</h2>;
+}
+
+function Betters() {
+  return <h2>Betters</h2>;
+}
+
+function About() {
+  return <h2>Statistic</h2>;
+}
+
+function Matches() {
+  return (
+    <div className="match-list-con">
+      <ul>
+        {list.map((match,i) => {
+          return <Match key={i} name={match.name} provider={match.provider} information={match.information}/>
+        })}
+      </ul>
+    </div>
+  )
+}
+
+function Match(props) {
+  return (
+    <div className="match">
+      <li>
+        {props.name}
+      </li>
+    </div>
+  )
+}
+
+
+
+function TopLists() {
+  return (
+    <div className="top-list-con">  
+      <TopBetters/>
+      <TopMatches/>
+    </div>
+  )
+}
+
+function TopMatches() {
+  return (
+    <div className="top-con">
+      <h4>Highest Arbitrage of Today</h4>
+    </div>
+  )
+}
+
+function TopBetters() {
+  return (
+    <div className="top-con">
+      <h4>Top Bet Providers</h4>
+    </div>
+  )
+}
 
 export default App;
