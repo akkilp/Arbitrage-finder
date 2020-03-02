@@ -1,14 +1,9 @@
-import React, { useState } from 'react';
-
+import React, { useState, useEffect} from 'react';
+import axios from 'axios'
 import './App.scss';
 
-const list = [{number:1, name:"cucumber", provider:"this", information:"on khyl"},
-{number:1, name:"cucumber", provider:"this", information:"on khyl"},
-{number:2, name:"cucumber", provider:"this", information:"on khyl"},
-{number:3, name:"cucumber", provider:"this", information:"on khyl"},
-{number:4, name:"cucumber", provider:"this", information:"on khyl"},
-{number:5, name:"cucumber", provider:"this", information:"on khyl"},
-{number:7, name:"cucumber", provider:"this", information:"on khyl"}]
+
+
 
 
 const NavBar = () => {
@@ -44,7 +39,7 @@ const App = () => (
 
 );
 
-
+// REACT ROUTER NÄILLE -->
 function Games() {
   return <h2>Games</h2>;
 }
@@ -57,13 +52,43 @@ function About() {
   return <h2>Statistic</h2>;
 }
 
+
 function Matches() {
+
+function fetchData(){
+  console.log('fetchData function executed')
+  axios.get('http://localhost:3500/matches')
+       .then(response => {
+        console.log(response.data)
+        setMatches(response.data.matchData)
+      }
+  )
+}
+
+  useEffect(() => {
+    console.log("Component did mount")
+    fetchData()
+    },[]);
+
+  const [matches, setMatches] = useState(null);
+
   return (
     <div className="match-list-con">
       <ul>
-        {list.map((match,i) => {
-          return <Match key={i} name={match.name} provider={match.provider} information={match.information}/>
-        })}
+        {matches ? (
+          matches.map((match,i) => {
+            return (
+              <Match 
+              key={i}
+              time={match.date}
+              event={match.event}
+              arbitrage={match.arbitrage}
+              />
+            )
+          })
+        )
+        : null
+        }
       </ul>
     </div>
   )
@@ -71,11 +96,13 @@ function Matches() {
 
 function Match(props) {
   return (
-    <div className="match">
-      <li>
-        {props.name}
-      </li>
-    </div>
+    <table className="match">
+        <tr>
+          <th>{props.time}</th>
+          <th>{props.event}</th>
+          <th>{props.arbitrage}</th>
+        </tr>
+    </table>
   )
 }
 
